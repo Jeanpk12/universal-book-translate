@@ -10,6 +10,10 @@ app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+# Cria o diretório de upload se não existir
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
 def extrair_texto_pdf(arquivo_pdf, numero_pagina):
     """
     Extrai o texto de uma página específica de um arquivo PDF.
@@ -52,12 +56,10 @@ def traduzir_texto_groq(texto_extraido):
     try:
         client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
         chat_completion = client.chat.completions.create(
-            messages=[
-                {
-                    "role": "user",
-                    "content": f'{prompt} {texto_extraido}. Retorne apenas a tradução sem nenhum comentário adicional.',
-                }
-            ],
+            messages=[{
+                "role": "user",
+                "content": f'{prompt} {texto_extraido}. Retorne apenas a tradução sem nenhum comentário adicional.',
+            }],
             model="llama-3.1-70b-versatile",
         )
         texto_traduzido = chat_completion.choices[0].message.content
@@ -79,17 +81,25 @@ def index():
         file = request.files['file']
         filename = secure_filename(file.filename)
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        file.save(filepath)
-
+        
+        # Salva o arquivo no diretório de uploads
         try:
-            numero_pagina = int(request.form['page_number'])
-        except ValueError:
-            return 'Número de página inválido.'
+            file.save(filepath)
 
-        texto_extraido = extrair_texto_pdf(filepath, numero_pagina)
-        texto_traduzido = traduzir_texto_groq(texto_extraido)
+            try:
+                numero_pagina = int(request.form['page_number'])
+            except ValueError:
+                return 'Número de página inválido.'
 
-        return render_template('result.html', traducao=texto_traduzido, pagina=numero_pagina, caminho_pdf=filepath)
+            texto_extraido = extrair_texto_pdf(filepath, numero_pagina)
+            if "Erro" in texto_extraido:  # Verifica se houve erro na extração
+                return texto_extraido
+
+            texto_traduzido = traduzir_texto_groq(texto_extraido)
+            return render_template('result.html', traducao=texto_traduzido, pagina=numero_pagina, caminho_pdf=filepath)
+
+        except Exception as e:
+            return f"Erro ao salvar o arquivo: {str(e)}"
 
     return render_template('index.html')
 
@@ -111,8 +121,10 @@ def pagina():
             numero_pagina -= 1
 
         texto_extraido = extrair_texto_pdf(caminho_pdf, numero_pagina)
-        texto_traduzido = traduzir_texto_groq(texto_extraido)
+        if "Erro" in texto_extraido:  # Verifica se houve erro na extração
+            return texto_extraido
 
+        texto_traduzido = traduzir_texto_groq(texto_extraido)
         return render_template('result.html', traducao=texto_traduzido, pagina=numero_pagina, caminho_pdf=caminho_pdf)
 
     except ValueError:
@@ -123,5 +135,4 @@ def pagina():
         return f"Erro ao processar a página: {str(e)}"
 
 if __name__ == '__main__':
-    # Configuração do modo de debug para desenvolvimento
-    app.run(debug=True)
+    app.run()
