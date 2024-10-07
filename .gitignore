@@ -1,0 +1,6 @@
+# Ignorar arquivos de ambiente e PDFs enviados
+.env
+uploads/*
+__pycache__/
+*.pyc
+*.pyo

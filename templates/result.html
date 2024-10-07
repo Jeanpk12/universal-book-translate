@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado da Tradução</title>
+    <link rel="stylesheet" href="../static/css/styles.css">
+</head>
+<body>
+    <h1>Tradução da Página {{ pagina }}</h1>
+
+    <div class="traducao">
+        {{ traducao | safe }}
+    </div>
+
+    <form method="POST" action="/pagina">
+        <input type="hidden" name="page_number" value="{{ pagina }}">
+        <input type="hidden" name="filepath" value="{{ caminho_pdf }}">
+
+        <button type="submit" name="action" value="previous">Voltar</button>
+        <button type="submit" name="action" value="next">Avançar</button>
+    </form>
+</body>
+</html>
