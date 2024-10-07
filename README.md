@@ -1,4 +1,4 @@
-# Universal Book Translator with Groq API
+# Universal Book Translator with Groq API *
 
 Este é um aplicativo Flask que permite o upload de arquivos PDF, extração e tradução de texto de páginas específicas utilizando a API Groq. O texto traduzido é exibido em HTML formatado e a aplicação suporta navegação entre as páginas do PDF.
 
