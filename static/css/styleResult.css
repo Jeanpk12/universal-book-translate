@@ -1,0 +1,71 @@
+/* Estilos gerais do corpo */
+body {
+    display: grid;
+    justify-content: center;
+    margin: 0;
+    background-color: #333;
+    font-family: "Alegreya", serif;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.5em;
+    --hc: #082048;
+    --mc: #052f04ba;
+}
+
+/* Container que vai simular a página do livro */
+.result-container {
+    display: flex;
+    flex-direction: column;
+    padding: 40px 80px;
+    margin: 20px;
+    max-width: 750px;
+    background-color: #f2f2ef;
+    border-radius: 8px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para o título */
+h1 {
+    font-weight: 600;
+    font-size: 32px;
+    text-align: center;
+    color: var(--hc);
+    margin: 1em 0;
+}
+
+p {
+    margin-top: 16px;
+}
+
+/* Estilos para o texto da tradução */
+.traducao {
+    font-size: 18px;
+    color: var(--hc);
+    margin-top: 20px;
+    text-align: justify;
+}
+
+/* Estilo dos botões */
+button {
+    background-color: var(--hc);
+    text-transform: uppercase;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-family: "Alegreya Sans", sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #064074;
+}
+
+/* Estilos para o container dos botões */
+.btn-container {
+    display: flex;
+    justify-content: space-between; /* Garante que os botões fiquem nos extremos */
+    margin-top: 30px;
+}

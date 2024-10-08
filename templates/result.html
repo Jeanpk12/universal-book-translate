@@ -4,21 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resultado da Tradução</title>
-    <link rel="stylesheet" href="../static/css/styles.css">
+    <link rel="stylesheet" href="../static/css/styleResult.css">
+    <link rel="stylesheet" href="../static/css/reset.css">
 </head>
 <body>
-    <h1>Tradução da Página {{ pagina }}</h1>
+    <div class="result-container">
+        <h1>Tradução da Página {{ pagina }}</h1>
 
-    <div class="traducao">
-        {{ traducao | safe }}
+        <div class="traducao">
+            {{ traducao | safe }}
+        </div>
+
+        <form method="POST" action="/pagina">
+            <input type="hidden" name="page_number" value="{{ pagina }}">
+            <input type="hidden" name="filepath" value="{{ caminho_pdf }}">
+            
+            <div class="btn-container">
+                <button type="submit" name="action" value="previous" id="voltar">Voltar</button>
+            <button type="submit" name="action" value="next" id="avancar">Avançar</button>
+            </div>
+        </form>
     </div>
-
-    <form method="POST" action="/pagina">
-        <input type="hidden" name="page_number" value="{{ pagina }}">
-        <input type="hidden" name="filepath" value="{{ caminho_pdf }}">
-
-        <button type="submit" name="action" value="previous">Voltar</button>
-        <button type="submit" name="action" value="next">Avançar</button>
-    </form>
 </body>
 </html>
