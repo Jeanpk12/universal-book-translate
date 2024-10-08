@@ -3,8 +3,5 @@ PyPDF2
 python-dotenv
 groq
 werkzeug
-<<<<<<< HEAD
 gunicorn
-=======
 gunicorn
->>>>>>> 101c41d75d817b73dc535f4083359bcbd3d303d0
